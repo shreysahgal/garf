@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block styles %}
+            <!-- Bootstrap CSS -->
+            {{ bootstrap.load_css() }}
+            <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+            <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+            <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        {% endblock %}
+
+        <title>garf !</title>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <!-- <strong>Title</strong> --> {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="row">
+          <div class="col text-center">
+            <a href="{{ url_for('index') }}"><img style="width: 16%; height: auto;" src="{{ url_for('static', filename='imgs/garf.jpg') }}"></a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <h4 style="font-family: 'Merriweather', serif; font-size: 22px;">Random Garfield Comic Generator</h4>
+          </div>
+        </div>
+        <div class="row sources">
+          <p class="col text-center">
+            <a href="{{ url_for('index') }}">Home</a> | <a href="{{ url_for('about') }}">How does it work?</a> | By <a href="https://shreysahgal.github.io/">Shrey Sahgal</a>
+          </p>
+        </div>
+        <br>
+        {% block content %}{% endblock %}
+
+        {% block scripts %}
+            <!-- Optional JavaScript -->
+            {{ bootstrap.load_js() }}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {% endblock %}
+    </body>
+</html>

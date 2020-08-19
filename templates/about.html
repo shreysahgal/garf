@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col text-left about">
+                <p>
+                    Garf! project is a silly side-project that I (<a href="https://shreysahgal.github.io/">shreysahgal.github.io</a>)
+                    made because it the idea sounded kinda funny. There is something so surreal and  Z O O M E R  about garfield comics.
+                    They exude such chaotic energy and I love reading some of the absurd ones (such as
+                    <a href="https://knowyourmeme.com/photos/1692490-garfield">this classic</a>). I thought a fun way to make the comics even more absurd
+                    (and even more  Z O O M E R) would be to pick random comic panels and string them together.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-left about">
+                <p class="indent">
+                    The way that Garf! actually works is relatively simple. When the page is loaded, three random garfield
+                    comic images are grabbed from this website: <a href="http://pt.jikos.cz/garfield/">pt.jikos.cz/garfield/</a>.
+                    Then, it uses opencv (in python) to separate the comic into different panels (the github repo
+                    <a href="https://github.com/njean42/kumiko">kumiko (https://github.com/njean42/kumiko)</a> helped me a lot to
+                    figure out some of the opencv stuff so huge shoutout to them). Once the comic is split into frames, a random frame is selected
+                    and saved as a tempfile. This process is repeated for two other images. Once three random panels are chosen, the images are
+                    concatenated, saved as another tempfile, and displayed on the website.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-left about">
+                <p class="indent">
+                    To get the comics, the app runs a really simple web-scraping script. Thankfully, all of the images on
+                    <a href="http://pt.jikos.cz/garfield/">pt.jikos.cz/garfield/</a> are titled by date. So all I have to do is generate a random date since 
+                    the start of Garfield Comics on June 19, 1978 and turn it into a url. Say, for example, the app generates the date September 18, 
+                    1979, the url-ifier generates <a href="http://images.ucomics.com/comics/ga/1979/ga790918.gif">images.ucomics.com/comics/ga/1979/ga790918.gif</a>.
+                    Most of the images are gifs which are treated sort of weirdly by opencv so I had to write an extra script which converts the images
+                    to jpgs. A weird error gets thrown if a non-gif image is grabbed which I haven't bothered to handle yet so as of right now if 
+                    a non-gif image is grabbed, the image is skipped and another image is grabbed.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-left about">
+                <p class="indent">
+                    As mentioned before, opencv is used to process a comic and to select a random frame from a given comic. To continue with the above
+                    example of June 19, 1979, here is the original comic from that date:
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center about">
+                <img src="{{ url_for('static', filename='/imgs/img2.png') }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-left about">
+                <p class="indent pt-3">
+                    The first step of image processing is turning the image into grayscale:
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center about">
+                <img src="{{ url_for('static', filename='/imgs/gray.jpg') }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-left about">
+                <p class="indent pt-3">
+                    Then a <code>THRESH_BINARY_INV</code> threshold is applied to the grayscale image:
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center about">
+                <img src="{{ url_for('static', filename='/imgs/threshold.jpg') }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-left about">
+                <p class="indent pt-3">
+                    As you can see, the threshold converts each pixel in the image to either black or white depending on whether
+                    the previous color of that pixel was within the threshold range. Once the image is black and white, the contours can
+                    be found really easily by using the aptly named <code>findContours</code> function. Contours are curves (or in this case
+                    lines) which join all the continuous points which have the same color or intensity. Once the contours are found, 
+                    A list of the 4 point coordinates are compiled in a list for each panel. Then a random list and chosen and that image is cropped
+                    to be only that panel and is saved as a tempfile. Once all three tempfiles are created, the concatenation method 
+                    <code>hconcatenate</code> is called and the images are stitched together and saved.
+                </p>
+            </div>
+        </div>
+        <footer class="text-center page-footer pt-3 pb-1">
+            &copy; <a class="footer-link" href="https://shreysahgal.github.io/">Shrey Sahgal</a> 2020
+        </footer>
+    </div>
+</body>
+{% endblock %}

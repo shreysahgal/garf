@@ -1,0 +1,54 @@
+.another {
+    background-color: #f49600;
+    color: black;
+    font-weight: bold;
+    font-family: 'Merriweather', serif;
+    font-size: 18px;
+}
+
+.another:hover {
+    background-color: #f49600;
+}
+
+.sources {
+    font-size: 15px;
+    text-align: center;
+    position: relative;
+}
+
+a {
+    color: #f49600;
+    text-decoration: none;
+}
+
+.nav {
+    font-family: 'Merriweather', serif;
+    color: #f49600;
+    text-align: center;
+}
+
+a:hover {
+    color: #f49600;
+    text-decoration: underline;
+}
+
+.about {
+    color: black;
+    font-family: 'Merriweather', serif;
+}
+
+.container {
+    width: 65%;
+}
+
+.about .indent {
+    text-indent: 1.4cm;
+}
+
+code {
+    background-color: #e6e6e6;
+}
+
+.footer-link {
+    text-decoration: underline;
+}
